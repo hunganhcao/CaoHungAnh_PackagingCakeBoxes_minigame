@@ -275,12 +275,27 @@ public class PlayController : MonoBehaviour
 		
 		item.SetPos(newX, newY);
 		item.transform.SetParent(listItemGrid[newX][newY].transform);
-		item.transform.localPosition = Vector2.zero;
+		StartCoroutine(MoveObject(item.transform, Vector2.zero));
+		//item.transform.localPosition = Vector2.zero;
 
+	}
+	IEnumerator MoveObject(Transform obj, Vector3 targetPosition)
+	{
+		Vector3 startPosition = obj.localPosition;
+		float elapsedTime = 0;
+
+		while (elapsedTime < 0.2f)
+		{
+			obj.localPosition = Vector3.Lerp(startPosition, targetPosition, elapsedTime /0.2f);
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+
+		obj.localPosition = targetPosition;
 	}
 	IEnumerator Win()
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.5f);
 		ui.Win();
 	}
 }
